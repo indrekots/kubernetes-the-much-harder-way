@@ -9,7 +9,7 @@ which in turn is a fork of the original [Kubernetes The Hard Way](https://github
 Compared to the original GCP tutorial, building a Kubernetes cluster from scratch on AWS requires more steps.
 
 > [!NOTE]  
-> By now, the original [Kubernetes The Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way) has been made cloud platform agnostic.
+> Initially, the original [Kubernetes The Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way) was GCP specific but now it's cloud platform agnostic.
 
 This tutorial walks you through setting up Kubernetes the hard way. This guide is not for people looking for a fully automated command to bring up a Kubernetes cluster. If that's you then check out [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine), [AWS Elastic Container Service for Kubernetes](https://aws.amazon.com/eks/) or the [Getting Started Guides](https://kubernetes.io/docs/setup).
 

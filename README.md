@@ -1,6 +1,6 @@
 # About
 
-This is a fork of [Kubernetes The Hard Way AWS](https://github.com/prabhatsharma/kubernetes-the-hard-way-aws) by @prabhatsharma
+This is a fork of [Kubernetes The Hard Way AWS](https://github.com/prabhatsharma/kubernetes-the-hard-way-aws) by [@prabhatsharma](https://github.com/prabhatsharma)
 which in turn is a fork of the original [Kubernetes The Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way)by Kelsey Hightower.
 
 # Kubernetes The Much Harder Way

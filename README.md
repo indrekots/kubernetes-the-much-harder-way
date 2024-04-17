@@ -1,10 +1,15 @@
 # About
 
-This is a fork of awesome [Kubernetes The Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way) by Kelsey Hightower and is geared towards using it on AWS. Also thanks to [@slawekzachcial](https://github.com/slawekzachcial) for his [work](https://github.com/slawekzachcial/kubernetes-the-hard-way-aws) that made this easier.
+This is a fork of [Kubernetes The Hard Way AWS](https://github.com/prabhatsharma/kubernetes-the-hard-way-aws) by @prabhatsharma
+which in turn is a fork of the original [Kubernetes The Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way)by Kelsey Hightower.
 
-There are currently no tool upgrades as compared to the original.
+# Kubernetes The Much Harder Way
 
-# Kubernetes The Hard Way
+[Kubernetes the Much Harder Way](https://www.lastweekinaws.com/blog/how-to-learn-something-new-kubernetes-the-much-harder-way/) is a blog post by  Corey Quinn.
+Compared to the original GCP tutorial, building a Kubernetes cluster from scratch on AWS requires more steps.
+
+> [!NOTE]  
+> By now, the original [Kubernetes The Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way) has been made cloud platform agnostic.
 
 This tutorial walks you through setting up Kubernetes the hard way. This guide is not for people looking for a fully automated command to bring up a Kubernetes cluster. If that's you then check out [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine), [AWS Elastic Container Service for Kubernetes](https://aws.amazon.com/eks/) or the [Getting Started Guides](https://kubernetes.io/docs/setup).
 
@@ -43,4 +48,5 @@ This tutorial assumes you have access to the [Amazon Web Service](https://aws.am
 * [Provisioning Pod Network Routes](docs/11-pod-network-routes.md)
 * [Deploying the DNS Cluster Add-on](docs/12-dns-addon.md)
 * [Smoke Test](docs/13-smoke-test.md)
+* [Nginx Ingress](docs/bonus-nginx-ingress.md) 🎁 Bonus content! 🎁
 * [Cleaning Up](docs/14-cleanup.md)

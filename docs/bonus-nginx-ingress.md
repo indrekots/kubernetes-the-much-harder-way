@@ -10,4 +10,4 @@ Follow the guide and try [installing the Ingress-Nginx Controller](https://kuber
 
 [Explore how Nginx Ingress controller works](https://blog.indrek.io/articles/whats-inside-the-nginx-ingress-controller/) by creating ingress objects and looking inside the controller.
 
-
+Next: [Clean Up](14-cleanup.md)

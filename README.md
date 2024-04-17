@@ -15,6 +15,7 @@ This tutorial walks you through setting up Kubernetes the hard way. This guide i
 
 Kubernetes The Hard Way is optimized for learning, which means taking the long route to ensure you understand each task required to bootstrap a Kubernetes cluster.
 
+> [!CAUTION]
 > The results of this tutorial should not be viewed as production ready, and may receive limited support from the community, but don't let that stop you from learning!
 
 ## Target Audience

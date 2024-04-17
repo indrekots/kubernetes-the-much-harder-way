@@ -44,8 +44,8 @@ aws configure set default.region $AWS_REGION
 > [!TIP]
 > Enable synchronize-panes by pressing `ctrl+b` followed by `shift+:`. Next type `set synchronize-panes on` at the prompt. To disable synchronization: `set synchronize-panes off`.
 
-Next: [Installing the Client Tools](02-client-tools.md)
-
 ### Download and install jq
 
 Refer this [link](https://jqlang.github.io/jq/download/) and install `jq` based on your OS. 
+
+Next: [Installing the Client Tools](02-client-tools.md)

@@ -26,7 +26,7 @@ This tutorial assumes a default compute region and zone have been configured.
 Go ahead and set a default compute region:
 
 ```
-AWS_REGION=us-west-1
+AWS_REGION=eu-west-1
 
 aws configure set default.region $AWS_REGION
 ```

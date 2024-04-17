@@ -1,10 +1,12 @@
 # Provisioning Compute Resources
 
-[Guide](https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/03-compute-resources.md)
-
 ## Networking
 
+Before we can create compute resources, we need to set up networking.
+
 ### VPC
+
+[A Virtual Private Cloud (VPC)](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) is a logically isolated section of the AWS Cloud where you can launch AWS resources in a virtual network.
 
 ```sh
 VPC_ID=$(aws ec2 create-vpc --cidr-block 10.0.0.0/16 --output text --query 'Vpc.VpcId')
@@ -14,6 +16,8 @@ aws ec2 modify-vpc-attribute --vpc-id ${VPC_ID} --enable-dns-hostnames '{"Value"
 ```
 
 ### Subnet
+
+[A subnet](https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html) is a range of IP addresses in your VPC. You can create AWS resources, such as EC2 instances, in specific subnets.
 
 ```sh
 SUBNET_ID=$(aws ec2 create-subnet \
@@ -25,6 +29,8 @@ aws ec2 create-tags --resources ${SUBNET_ID} --tags Key=Name,Value=kubernetes
 
 ### Internet Gateway
 
+[An internet gateway (IGW)](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html) is VPC component that allows communication between your VPC and the internet.
+
 ```sh
 INTERNET_GATEWAY_ID=$(aws ec2 create-internet-gateway --output text --query 'InternetGateway.InternetGatewayId')
 aws ec2 create-tags --resources ${INTERNET_GATEWAY_ID} --tags Key=Name,Value=kubernetes
@@ -33,6 +39,8 @@ aws ec2 attach-internet-gateway --internet-gateway-id ${INTERNET_GATEWAY_ID} --v
 
 ### Route Tables
 
+[A route table](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html) contains a set of rules, called routes, that determine where network traffic from your subnet or gateway is directed.
+
 ```sh
 ROUTE_TABLE_ID=$(aws ec2 create-route-table --vpc-id ${VPC_ID} --output text --query 'RouteTable.RouteTableId')
 aws ec2 create-tags --resources ${ROUTE_TABLE_ID} --tags Key=Name,Value=kubernetes
@@ -40,7 +48,10 @@ aws ec2 associate-route-table --route-table-id ${ROUTE_TABLE_ID} --subnet-id ${S
 aws ec2 create-route --route-table-id ${ROUTE_TABLE_ID} --destination-cidr-block 0.0.0.0/0 --gateway-id ${INTERNET_GATEWAY_ID}
 ```
 
-### Security Groups (aka Firewall Rules)
+### Security Groups
+
+[Security Groups](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html) are used to control traffic on the instance level.
+You can think of them as firewall rules.
 
 ```sh
 SECURITY_GROUP_ID=$(aws ec2 create-security-group \

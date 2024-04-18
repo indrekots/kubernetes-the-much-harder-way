@@ -191,7 +191,7 @@ admin.kubeconfig
 Copy the appropriate `kubelet` and `kube-proxy` kubeconfig files to each worker instance:
 
 ```bash
-for instance in worker-0 worker-1 worker-2; do
+for instance in ${WORKER_NAME}-0 ${WORKER_NAME}-1 ${WORKER_NAME}-2; do
   external_ip=$(aws ec2 describe-instances --filters \
     "Name=tag:Name,Values=${instance}" \
     "Name=instance-state-name,Values=running" \
@@ -205,7 +205,7 @@ done
 Copy the appropriate `kube-controller-manager` and `kube-scheduler` kubeconfig files to each controller instance:
 
 ```bash
-for instance in controller-0 controller-1 controller-2; do
+for instance in ${CONTROLLER_NAME}-0 ${CONTROLLER_NAME}-1 ${CONTROLLER_NAME}-2; do
   external_ip=$(aws ec2 describe-instances --filters \
     "Name=tag:Name,Values=${instance}" \
     "Name=instance-state-name,Values=running" \

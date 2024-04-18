@@ -17,7 +17,7 @@ Follow the AWS CLI [documentation](https://aws.amazon.com/cli/) to install and c
 
 Verify the AWS CLI version using:
 
-```
+```bash
 aws --version
 ```
 
@@ -25,9 +25,9 @@ aws --version
 
 This tutorial assumes a default compute region and zone have been configured.
 
-Go ahead and set a default compute region:
+Go ahead and set a default compute region to your preferred AWS region
 
-```
+```bash
 AWS_REGION=eu-west-1
 
 aws configure set default.region $AWS_REGION

@@ -13,6 +13,7 @@ VPC_ID=$(aws ec2 create-vpc --cidr-block 10.0.0.0/16 --output text --query 'Vpc.
 aws ec2 create-tags --resources ${VPC_ID} --tags Key=Name,Value=kubernetes-the-hard-way
 aws ec2 modify-vpc-attribute --vpc-id ${VPC_ID} --enable-dns-support '{"Value": true}'
 aws ec2 modify-vpc-attribute --vpc-id ${VPC_ID} --enable-dns-hostnames '{"Value": true}'
+aws ec2 create-tags --resources ${VPC_ID} --tags Key=Name,Value=<vpc name>
 ```
 
 ### Subnet
@@ -24,7 +25,7 @@ SUBNET_ID=$(aws ec2 create-subnet \
   --vpc-id ${VPC_ID} \
   --cidr-block 10.0.1.0/24 \
   --output text --query 'Subnet.SubnetId')
-aws ec2 create-tags --resources ${SUBNET_ID} --tags Key=Name,Value=kubernetes
+aws ec2 create-tags --resources ${SUBNET_ID} --tags Key=Name,Value=<subnet name>
 ```
 
 ### Internet Gateway
@@ -33,7 +34,7 @@ aws ec2 create-tags --resources ${SUBNET_ID} --tags Key=Name,Value=kubernetes
 
 ```sh
 INTERNET_GATEWAY_ID=$(aws ec2 create-internet-gateway --output text --query 'InternetGateway.InternetGatewayId')
-aws ec2 create-tags --resources ${INTERNET_GATEWAY_ID} --tags Key=Name,Value=kubernetes
+aws ec2 create-tags --resources ${INTERNET_GATEWAY_ID} --tags Key=Name,Value=<internet gateway name>
 aws ec2 attach-internet-gateway --internet-gateway-id ${INTERNET_GATEWAY_ID} --vpc-id ${VPC_ID}
 ```
 
@@ -43,7 +44,7 @@ aws ec2 attach-internet-gateway --internet-gateway-id ${INTERNET_GATEWAY_ID} --v
 
 ```sh
 ROUTE_TABLE_ID=$(aws ec2 create-route-table --vpc-id ${VPC_ID} --output text --query 'RouteTable.RouteTableId')
-aws ec2 create-tags --resources ${ROUTE_TABLE_ID} --tags Key=Name,Value=kubernetes
+aws ec2 create-tags --resources ${ROUTE_TABLE_ID} --tags Key=Name,Value=<route table name>
 aws ec2 associate-route-table --route-table-id ${ROUTE_TABLE_ID} --subnet-id ${SUBNET_ID}
 aws ec2 create-route --route-table-id ${ROUTE_TABLE_ID} --destination-cidr-block 0.0.0.0/0 --gateway-id ${INTERNET_GATEWAY_ID}
 ```
@@ -59,7 +60,7 @@ SECURITY_GROUP_ID=$(aws ec2 create-security-group \
   --description "Kubernetes security group" \
   --vpc-id ${VPC_ID} \
   --output text --query 'GroupId')
-aws ec2 create-tags --resources ${SECURITY_GROUP_ID} --tags Key=Name,Value=kubernetes
+aws ec2 create-tags --resources ${SECURITY_GROUP_ID} --tags Key=Name,Value=<security group name>
 aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --protocol all --cidr 10.0.0.0/16
 aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --protocol all --cidr 10.200.0.0/16
 aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --protocol tcp --port 22 --cidr 0.0.0.0/0

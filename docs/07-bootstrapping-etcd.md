@@ -29,21 +29,21 @@ Now ssh into each one of the IP addresses received in last step.
 
 Download the official etcd release binaries from the [etcd](https://github.com/etcd-io/etcd) GitHub project:
 
-```
+```bash
 wget -q --show-progress --https-only --timestamping \
   "https://github.com/etcd-io/etcd/releases/download/v3.4.15/etcd-v3.4.15-linux-amd64.tar.gz"
 ```
 
 Extract and install the `etcd` server and the `etcdctl` command line utility:
 
-```
+```bash
 tar -xvf etcd-v3.4.15-linux-amd64.tar.gz
 sudo mv etcd-v3.4.15-linux-amd64/etcd* /usr/local/bin/
 ```
 
 ### Configure the etcd Server
 
-```
+```bash
 sudo mkdir -p /etc/etcd /var/lib/etcd
 sudo chmod 700 /var/lib/etcd
 sudo cp ca.pem kubernetes-key.pem kubernetes.pem /etc/etcd/
@@ -51,13 +51,13 @@ sudo cp ca.pem kubernetes-key.pem kubernetes.pem /etc/etcd/
 
 The instance internal IP address will be used to serve client requests and communicate with etcd cluster peers. Retrieve the internal IP address for the current compute instance:
 
-```
+```bash
 INTERNAL_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
 ```
 
 Each etcd member must have a unique name within an etcd cluster. Set the etcd name to match the hostname of the current compute instance:
 
-```
+```bash
 ETCD_NAME=$(curl -s http://169.254.169.254/latest/user-data/ \
   | tr "|" "\n" | grep "^name" | cut -d"=" -f2)
 echo "${ETCD_NAME}"
@@ -65,7 +65,7 @@ echo "${ETCD_NAME}"
 
 Create the `etcd.service` systemd unit file:
 
-```
+```bash
 cat <<EOF | sudo tee /etc/systemd/system/etcd.service
 [Unit]
 Description=etcd
@@ -101,19 +101,20 @@ EOF
 
 ### Start the etcd Server
 
-```
+```bash
 sudo systemctl daemon-reload
 sudo systemctl enable etcd
 sudo systemctl start etcd
 ```
 
+> [!NOTE]
 > Remember to run the above commands on each controller node: `controller-0`, `controller-1`, and `controller-2`.
 
 ## Verification
 
 List the etcd cluster members:
 
-```
+```bash
 sudo ETCDCTL_API=3 etcdctl member list \
   --endpoints=https://127.0.0.1:2379 \
   --cacert=/etc/etcd/ca.pem \

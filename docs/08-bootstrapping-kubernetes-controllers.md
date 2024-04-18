@@ -1,13 +1,13 @@
 # Bootstrapping the Kubernetes Control Plane
 
-In this lab you will bootstrap the Kubernetes control plane across three compute instances and configure it for high availability. You will also create an external load balancer that exposes the Kubernetes API Servers to remote clients. The following components will be installed on each node: Kubernetes API Server, Scheduler, and Controller Manager.
+In this lab you will bootstrap the Kubernetes control plane across three compute instances and configure it for high availability. You will also create an external load balancer that exposes the Kubernetes API Servers to remote clients. The following components will be installed on each node: [Kubernetes API Server](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver/), [Scheduler](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler/), and [Controller Manager](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/).
 
 ## Prerequisites
 
 The commands in this lab must be run on each controller instance: `controller-0`, `controller-1`, and `controller-2`. Login to each controller instance using the `ssh` command. Example:
 
-```
-for instance in controller-0 controller-1 controller-2; do
+```bash
+for instance in ${CONTROLLER_NAME}-0 ${CONTROLLER_NAME}-1 ${CONTROLLER_NAME}-2; do
   external_ip=$(aws ec2 describe-instances --filters \
     "Name=tag:Name,Values=${instance}" \
     "Name=instance-state-name,Values=running" \
@@ -27,7 +27,7 @@ Now ssh into each one of the IP addresses received in last step.
 
 Create the Kubernetes configuration directory:
 
-```
+```bash
 sudo mkdir -p /etc/kubernetes/config
 ```
 
@@ -35,7 +35,7 @@ sudo mkdir -p /etc/kubernetes/config
 
 Download the official Kubernetes release binaries:
 
-```
+```bash
 wget -q --show-progress --https-only --timestamping \
   "https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kube-apiserver" \
   "https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kube-controller-manager" \
@@ -45,14 +45,14 @@ wget -q --show-progress --https-only --timestamping \
 
 Install the Kubernetes binaries:
 
-```
+```bash
 chmod +x kube-apiserver kube-controller-manager kube-scheduler kubectl
 sudo mv kube-apiserver kube-controller-manager kube-scheduler kubectl /usr/local/bin/
 ```
 
 ### Configure the Kubernetes API Server
 
-```
+```bash
 sudo mkdir -p /var/lib/kubernetes/
 
 sudo mv ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem \
@@ -62,13 +62,13 @@ sudo mv ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem \
 
 The instance internal IP address will be used to advertise the API Server to members of the cluster. Retrieve the internal IP address for the current compute instance:
 
-```
+```bash
 INTERNAL_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
 ```
 
 Create the `kube-apiserver.service` systemd unit file:
 
-```
+```bash
 cat <<EOF | sudo tee /etc/systemd/system/kube-apiserver.service
 [Unit]
 Description=Kubernetes API Server

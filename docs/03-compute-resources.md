@@ -77,13 +77,13 @@ aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --proto
 
 ```sh
   LOAD_BALANCER_ARN=$(aws elbv2 create-load-balancer \
-    --name kubernetes \
+    --name <loadbalancer name> \
     --subnets ${SUBNET_ID} \
     --scheme internet-facing \
     --type network \
     --output text --query 'LoadBalancers[].LoadBalancerArn')
   TARGET_GROUP_ARN=$(aws elbv2 create-target-group \
-    --name kubernetes \
+    --name <target group name> \
     --protocol TCP \
     --port 6443 \
     --vpc-id ${VPC_ID} \

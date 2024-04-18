@@ -1,5 +1,9 @@
 # Provisioning Compute Resources
 
+The following commands will create the required AWS resources.
+Most commands require you to set the `Name` tag.
+Use a name that make the resources easily distinguishable from resources that might already exist on your AWS account.
+
 ## Networking
 
 Before we can create compute resources, we need to set up networking.

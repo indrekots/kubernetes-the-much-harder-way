@@ -48,6 +48,15 @@ aws configure set default.region $AWS_REGION
 
 ### Download and install jq
 
-Refer this [link](https://jqlang.github.io/jq/download/) and install `jq` based on your OS. 
+Refer this [link](https://jqlang.github.io/jq/download/) and install `jq` based on your OS.
+
+### Create a new folder
+
+During the course of this tutorial, several new files will be created.
+Create a folder to store them.
+
+```bash
+mkdir kubernetes-the-hard-way
+```
 
 Next: [Installing the Client Tools](02-client-tools.md)

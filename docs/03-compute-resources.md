@@ -2,7 +2,7 @@
 
 The following commands will create the required AWS resources.
 Most commands require you to set the `Name` tag.
-Use a name that make the resources easily distinguishable from resources that might already exist on your AWS account.
+Use a name that makes the resources easily distinguishable from resources that might already exist on your AWS account.
 
 ## Networking
 

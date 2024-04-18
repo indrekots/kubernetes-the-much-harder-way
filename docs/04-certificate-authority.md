@@ -145,7 +145,7 @@ EOF
     -config=ca-config.json \
     -hostname=${instance_hostname},${external_ip},${internal_ip} \
     -profile=kubernetes \
-    worker-${i}-csr.json | cfssljson -bare worker-${i}
+    ${WORKER_NAME}-${i}-csr.json | cfssljson -bare ${WORKER_NAME}-${i}
 done
 ```
 

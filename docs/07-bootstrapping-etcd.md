@@ -63,6 +63,11 @@ ETCD_NAME=$(curl -s http://169.254.169.254/latest/user-data/ \
 echo "${ETCD_NAME}"
 ```
 
+Set the controller name variable you've been using in previous steps:
+```bash
+CONTROLLER_NAME=<controller name>
+```
+
 Create the `etcd.service` systemd unit file:
 
 ```bash
@@ -88,7 +93,7 @@ ExecStart=/usr/local/bin/etcd \\
   --listen-client-urls https://${INTERNAL_IP}:2379,https://127.0.0.1:2379 \\
   --advertise-client-urls https://${INTERNAL_IP}:2379 \\
   --initial-cluster-token etcd-cluster-0 \\
-  --initial-cluster controller-0=https://10.0.1.10:2380,controller-1=https://10.0.1.11:2380,controller-2=https://10.0.1.12:2380 \\
+  --initial-cluster ${CONTROLLER_NAME}-0=https://10.0.1.10:2380,${CONTROLLER_NAME}-1=https://10.0.1.11:2380,${CONTROLLER_NAME}-2=https://10.0.1.12:2380 \\
   --initial-cluster-state new \\
   --data-dir=/var/lib/etcd
 Restart=on-failure
@@ -109,6 +114,11 @@ sudo systemctl start etcd
 
 > [!NOTE]
 > Remember to run the above commands on each controller node: `controller-0`, `controller-1`, and `controller-2`.
+
+If you experience any issues starting up `etcd`, have a look at the logs:
+```bash
+journalctl -u etcd.service
+```
 
 ## Verification
 

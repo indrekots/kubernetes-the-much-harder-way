@@ -22,12 +22,13 @@ KUBERNETES_PUBLIC_ADDRESS=$(aws elbv2 describe-load-balancers \
 
 When generating kubeconfig files for Kubelets the client certificate matching the Kubelet's node name must be used. This will ensure Kubelets are properly authorized by the Kubernetes [Node Authorizer](https://kubernetes.io/docs/admin/authorization/node/).
 
+> [!IMPORTANT]
 > The following commands must be run in the same directory used to generate the SSL certificates during the [Generating TLS Certificates](04-certificate-authority.md) lab.
 
 Generate a kubeconfig file for each worker node:
 
 ```bash
-for instance in worker-0 worker-1 worker-2; do
+for instance in ${WORKER_NAME}-0 ${WORKER_NAME}-1 ${WORKER_NAME}-2; do
   kubectl config set-cluster kubernetes-the-hard-way \
     --certificate-authority=ca.pem \
     --embed-certs=true \

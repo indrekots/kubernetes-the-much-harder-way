@@ -121,7 +121,7 @@ IMAGE_ID=$(aws ec2 describe-images --owners 099720109477 \
 ### SSH Key Pair
 
 ```sh
-aws ec2 create-key-pair --key-name kubernetes --output text --query 'KeyMaterial' > kubernetes.id_rsa
+aws ec2 create-key-pair --key-name <key-name> --output text --query 'KeyMaterial' > kubernetes.id_rsa
 chmod 600 kubernetes.id_rsa
 ```
 
@@ -135,7 +135,7 @@ for i in 0 1 2; do
     --associate-public-ip-address \
     --image-id ${IMAGE_ID} \
     --count 1 \
-    --key-name kubernetes \
+    --key-name <key name from previous step> \
     --security-group-ids ${SECURITY_GROUP_ID} \
     --instance-type t3.micro \
     --private-ip-address 10.0.1.1${i} \

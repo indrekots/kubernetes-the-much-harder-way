@@ -130,6 +130,7 @@ chmod 600 kubernetes.id_rsa
 Using `t3.micro` instances
 
 ```sh
+CONTROLLER_NAME=<controller name>
 for i in 0 1 2; do
   instance_id=$(aws ec2 run-instances \
     --associate-public-ip-address \
@@ -139,19 +140,20 @@ for i in 0 1 2; do
     --security-group-ids ${SECURITY_GROUP_ID} \
     --instance-type t3.micro \
     --private-ip-address 10.0.1.1${i} \
-    --user-data "name=controller-${i}" \
+    --user-data "name=${CONTROLLER_NAME}-${i}" \
     --subnet-id ${SUBNET_ID} \
     --block-device-mappings='{"DeviceName": "/dev/sda1", "Ebs": { "VolumeSize": 50 }, "NoDevice": "" }' \
     --output text --query 'Instances[].InstanceId')
   aws ec2 modify-instance-attribute --instance-id ${instance_id} --no-source-dest-check
-  aws ec2 create-tags --resources ${instance_id} --tags "Key=Name,Value=controller-${i}"
-  echo "controller-${i} created"
+  aws ec2 create-tags --resources ${instance_id} --tags "Key=Name,Value=${CONTROLLER_NAME}-${i}"
+  echo "${CONTROLLER_NAME}-${i} created"
 done
 ```
 
 ### Kubernetes Workers
 
 ```sh
+WORKER_NAME=<worker name>
 for i in 0 1 2; do
   instance_id=$(aws ec2 run-instances \
     --associate-public-ip-address \
@@ -161,13 +163,13 @@ for i in 0 1 2; do
     --security-group-ids ${SECURITY_GROUP_ID} \
     --instance-type t3.micro \
     --private-ip-address 10.0.1.2${i} \
-    --user-data "name=worker-${i}|pod-cidr=10.200.${i}.0/24" \
+    --user-data "name=${WORKER_NAME}-${i}|pod-cidr=10.200.${i}.0/24" \
     --subnet-id ${SUBNET_ID} \
     --block-device-mappings='{"DeviceName": "/dev/sda1", "Ebs": { "VolumeSize": 50 }, "NoDevice": "" }' \
     --output text --query 'Instances[].InstanceId')
   aws ec2 modify-instance-attribute --instance-id ${instance_id} --no-source-dest-check
-  aws ec2 create-tags --resources ${instance_id} --tags "Key=Name,Value=worker-${i}"
-  echo "worker-${i} created"
+  aws ec2 create-tags --resources ${instance_id} --tags "Key=Name,Value=${WORKER_NAME}-${i}"
+  echo "${WORKER_NAME}-${i} created"
 done
 ```
 

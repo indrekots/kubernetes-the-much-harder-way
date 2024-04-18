@@ -103,11 +103,12 @@ Kubernetes uses a [special-purpose authorization mode](https://kubernetes.io/doc
 In order to be authorized by the Node Authorizer, Kubelets must use a credential that identifies them as being in the `system:nodes` group, with a username of `system:node:<nodeName>`.
 In this section you will create a certificate for each Kubernetes worker node that meets the Node Authorizer requirements.
 
-Generate a certificate and private key for each Kubernetes worker node:
+Generate a certificate and private key for each Kubernetes worker node.
+The `WORKER_NAME` variable should be the same that was used to set up [compute resources](03-compute-resources.md).
 
 ```bash
 for i in 0 1 2; do
-  instance="worker-${i}"
+  instance="${WORKER_NAME}-${i}"
   instance_hostname="ip-10-0-1-2${i}"
   cat > ${instance}-csr.json <<EOF
 {

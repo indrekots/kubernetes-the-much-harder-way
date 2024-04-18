@@ -145,7 +145,7 @@ for i in 0 1 2; do
     --output text --query 'Instances[].InstanceId')
   aws ec2 modify-instance-attribute --instance-id ${instance_id} --no-source-dest-check
   aws ec2 create-tags --resources ${instance_id} --tags "Key=Name,Value=controller-${i}"
-  echo "controller-${i} created "
+  echo "controller-${i} created"
 done
 ```
 
@@ -157,7 +157,7 @@ for i in 0 1 2; do
     --associate-public-ip-address \
     --image-id ${IMAGE_ID} \
     --count 1 \
-    --key-name kubernetes \
+    --key-name <key name from previous step> \
     --security-group-ids ${SECURITY_GROUP_ID} \
     --instance-type t3.micro \
     --private-ip-address 10.0.1.2${i} \

@@ -6,8 +6,8 @@ In this lab you will bootstrap three Kubernetes worker nodes. The following comp
 
 The commands in this lab must be run on each worker instance: `worker-0`, `worker-1`, and `worker-2`. Login to each worker instance using the `ssh` command. Example:
 
-```
-for instance in worker-0 worker-1 worker-2; do
+```bash
+for instance in ${WORKER_NAME}-0 ${WORKER_NAME}-1 ${WORKER_NAME}-2; do
   external_ip=$(aws ec2 describe-instances --filters \
     "Name=tag:Name,Values=${instance}" \
     "Name=instance-state-name,Values=running" \
@@ -27,11 +27,12 @@ Now ssh into each one of the IP addresses received in last step.
 
 Install the OS dependencies:
 
-```
+```bash
 sudo apt-get update
 sudo apt-get -y install socat conntrack ipset
 ```
 
+> [!NOTE]
 > The socat binary enables support for the `kubectl port-forward` command.
 
 ### Disable Swap
@@ -40,21 +41,22 @@ By default the kubelet will fail to start if [swap](https://help.ubuntu.com/comm
 
 Verify if swap is enabled:
 
-```
+```bash
 sudo swapon --show
 ```
 
-If output is empthy then swap is not enabled. If swap is enabled run the following command to disable swap immediately:
+If output is empty then swap is not enabled. If swap is enabled run the following command to disable swap immediately:
 
-```
+```bash
 sudo swapoff -a
 ```
 
+> [!NOTE]
 > To ensure swap remains off after reboot consult your Linux distro documentation.
 
 ### Download and Install Worker Binaries
 
-```
+```bash
 wget -q --show-progress --https-only --timestamping \
   https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.21.0/crictl-v1.21.0-linux-amd64.tar.gz \
   https://github.com/opencontainers/runc/releases/download/v1.0.0-rc93/runc.amd64 \
@@ -67,7 +69,7 @@ wget -q --show-progress --https-only --timestamping \
 
 Create the installation directories:
 
-```
+```bash
 sudo mkdir -p \
   /etc/cni/net.d \
   /opt/cni/bin \
@@ -79,7 +81,7 @@ sudo mkdir -p \
 
 Install the worker binaries:
 
-```
+```bash
 mkdir containerd
 tar -xvf crictl-v1.21.0-linux-amd64.tar.gz
 tar -xvf containerd-1.4.4-linux-amd64.tar.gz -C containerd
@@ -94,7 +96,7 @@ sudo mv containerd/bin/* /bin/
 
 Retrieve the Pod CIDR range for the current compute instance:
 
-```
+```bash
 POD_CIDR=$(curl -s http://169.254.169.254/latest/user-data/ \
   | tr "|" "\n" | grep "^pod-cidr" | cut -d"=" -f2)
 echo "${POD_CIDR}"
@@ -102,7 +104,7 @@ echo "${POD_CIDR}"
 
 Create the `bridge` network configuration file:
 
-```
+```bash
 cat <<EOF | sudo tee /etc/cni/net.d/10-bridge.conf
 {
     "cniVersion": "0.4.0",
@@ -124,7 +126,7 @@ EOF
 
 Create the `loopback` network configuration file:
 
-```
+```bash
 cat <<EOF | sudo tee /etc/cni/net.d/99-loopback.conf
 {
     "cniVersion": "0.4.0",
@@ -138,11 +140,11 @@ EOF
 
 Create the `containerd` configuration file:
 
-```
+```bash
 sudo mkdir -p /etc/containerd/
 ```
 
-```
+```bash
 cat << EOF | sudo tee /etc/containerd/config.toml
 [plugins]
   [plugins.cri.containerd]
@@ -156,7 +158,7 @@ EOF
 
 Create the `containerd.service` systemd unit file:
 
-```
+```bash
 cat <<EOF | sudo tee /etc/systemd/system/containerd.service
 [Unit]
 Description=containerd container runtime
@@ -182,7 +184,7 @@ EOF
 
 ### Configure the Kubelet
 
-```
+```bash
 WORKER_NAME=$(curl -s http://169.254.169.254/latest/user-data/ \
 | tr "|" "\n" | grep "^name" | cut -d"=" -f2)
 echo "${WORKER_NAME}"
@@ -194,7 +196,7 @@ sudo mv ca.pem /var/lib/kubernetes/
 
 Create the `kubelet-config.yaml` configuration file:
 
-```
+```bash
 cat <<EOF | sudo tee /var/lib/kubelet/kubelet-config.yaml
 kind: KubeletConfiguration
 apiVersion: kubelet.config.k8s.io/v1beta1
@@ -218,11 +220,12 @@ tlsPrivateKeyFile: "/var/lib/kubelet/${WORKER_NAME}-key.pem"
 EOF
 ```
 
+> [!NOTE]
 > The `resolvConf` configuration is used to avoid loops when using CoreDNS for service discovery on systems running `systemd-resolved`. 
 
 Create the `kubelet.service` systemd unit file:
 
-```
+```bash
 cat <<EOF | sudo tee /etc/systemd/system/kubelet.service
 [Unit]
 Description=Kubernetes Kubelet
@@ -250,13 +253,13 @@ EOF
 
 ### Configure the Kubernetes Proxy
 
-```
+```bash
 sudo mv kube-proxy.kubeconfig /var/lib/kube-proxy/kubeconfig
 ```
 
 Create the `kube-proxy-config.yaml` configuration file:
 
-```
+```bash
 cat <<EOF | sudo tee /var/lib/kube-proxy/kube-proxy-config.yaml
 kind: KubeProxyConfiguration
 apiVersion: kubeproxy.config.k8s.io/v1alpha1
@@ -269,7 +272,7 @@ EOF
 
 Create the `kube-proxy.service` systemd unit file:
 
-```
+```bash
 cat <<EOF | sudo tee /etc/systemd/system/kube-proxy.service
 [Unit]
 Description=Kubernetes Kube Proxy
@@ -288,21 +291,23 @@ EOF
 
 ### Start the Worker Services
 
-```
+```bash
 sudo systemctl daemon-reload
 sudo systemctl enable containerd kubelet kube-proxy
 sudo systemctl start containerd kubelet kube-proxy
 ```
 
+> [!NOTE]
 > Remember to run the above commands on each worker node: `worker-0`, `worker-1`, and `worker-2`.
 
 ## Verification
 
+> [!NOTE]
 > The compute instances created in this tutorial will not have permission to complete this section. Run the following commands from the same machine used to create the compute instances.
 
 List the registered Kubernetes nodes:
 
-```
+```bash
 external_ip=$(aws ec2 describe-instances --filters \
     "Name=tag:Name,Values=controller-0" \
     "Name=instance-state-name,Values=running" \

@@ -6,7 +6,7 @@ In this lab you will delete the compute resources created during this tutorial.
 
 Delete the all worker instances, then afterwards delete controller instances:
 
-```
+```bash
 echo "Issuing shutdown to worker nodes.. " && \
 aws ec2 terminate-instances \
   --instance-ids \
@@ -44,7 +44,7 @@ aws ec2 delete-key-pair --key-name kubernetes
 
 Delete the external load balancer network resources:
 
-```
+```bash
 aws elbv2 delete-load-balancer --load-balancer-arn "${LOAD_BALANCER_ARN}"
 aws elbv2 delete-target-group --target-group-arn "${TARGET_GROUP_ARN}"
 aws ec2 delete-security-group --group-id "${SECURITY_GROUP_ID}"

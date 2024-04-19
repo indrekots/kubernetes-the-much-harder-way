@@ -155,13 +155,13 @@ EOF
 
 Move the `kube-scheduler` kubeconfig into place:
 
-```
+```bash
 sudo mv kube-scheduler.kubeconfig /var/lib/kubernetes/
 ```
 
 Create the `kube-scheduler.yaml` configuration file:
 
-```
+```bash
 cat <<EOF | sudo tee /etc/kubernetes/config/kube-scheduler.yaml
 apiVersion: kubescheduler.config.k8s.io/v1beta1
 kind: KubeSchedulerConfiguration
@@ -174,7 +174,7 @@ EOF
 
 Create the `kube-scheduler.service` systemd unit file:
 
-```
+```bash
 cat <<EOF | sudo tee /etc/systemd/system/kube-scheduler.service
 [Unit]
 Description=Kubernetes Scheduler
@@ -194,7 +194,7 @@ EOF
 
 ### Start the Controller Services
 
-```
+```bash
 sudo systemctl daemon-reload
 sudo systemctl enable kube-apiserver kube-controller-manager kube-scheduler
 sudo systemctl start kube-apiserver kube-controller-manager kube-scheduler
@@ -204,7 +204,7 @@ sudo systemctl start kube-apiserver kube-controller-manager kube-scheduler
 
 ### Verification
 
-```
+```bash
 kubectl cluster-info --kubeconfig admin.kubeconfig
 ```
 
@@ -221,7 +221,7 @@ be able to resolve the worker hostnames.  This is not set up by default in
 AWS.  The workaround is to add manual host entries on each of the controller
 nodes with this command:
 
-```
+```bash
 cat <<EOF | sudo tee -a /etc/hosts
 10.0.1.20 ip-10-0-1-20
 10.0.1.21 ip-10-0-1-21
@@ -240,7 +240,7 @@ In this section you will configure RBAC permissions to allow the Kubernetes API 
 
 The commands in this section will effect the entire cluster and only need to be run once from one of the controller nodes.
 
-```
+```bash
 external_ip=$(aws ec2 describe-instances --filters \
     "Name=tag:Name,Values=controller-0" \
     "Name=instance-state-name,Values=running" \
@@ -251,7 +251,7 @@ ssh -i kubernetes.id_rsa ubuntu@${external_ip}
 
 Create the `system:kube-apiserver-to-kubelet` [ClusterRole](https://kubernetes.io/docs/admin/authorization/rbac/#role-and-clusterrole) with permissions to access the Kubelet API and perform most common tasks associated with managing pods:
 
-```
+```bash
 cat <<EOF | kubectl apply --kubeconfig admin.kubeconfig -f -
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -279,7 +279,7 @@ The Kubernetes API Server authenticates to the Kubelet as the `kubernetes` user 
 
 Bind the `system:kube-apiserver-to-kubelet` ClusterRole to the `kubernetes` user:
 
-```
+```bash
 cat <<EOF | kubectl apply --kubeconfig admin.kubeconfig -f -
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -303,7 +303,7 @@ EOF
 
 Retrieve the `kubernetes-the-hard-way` Load Balancer address:
 
-```
+```bash
 KUBERNETES_PUBLIC_ADDRESS=$(aws elbv2 describe-load-balancers \
   --load-balancer-arns ${LOAD_BALANCER_ARN} \
   --output text --query 'LoadBalancers[].DNSName')
@@ -311,7 +311,7 @@ KUBERNETES_PUBLIC_ADDRESS=$(aws elbv2 describe-load-balancers \
 
 Make a HTTP request for the Kubernetes version info:
 
-```
+```bash
 curl --cacert ca.pem https://${KUBERNETES_PUBLIC_ADDRESS}/version
 ```
 

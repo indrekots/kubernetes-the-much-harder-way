@@ -252,7 +252,7 @@ The commands in this section will effect the entire cluster and only need to be 
 
 ```bash
 external_ip=$(aws ec2 describe-instances --filters \
-    "Name=tag:Name,Values=controller-0" \
+    "Name=tag:Name,Values=${CONTROLLER_NAME}-0" \
     "Name=instance-state-name,Values=running" \
     --output text --query 'Reservations[].Instances[].PublicIpAddress')
 

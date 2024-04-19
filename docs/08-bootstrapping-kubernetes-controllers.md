@@ -237,6 +237,7 @@ cat <<EOF | sudo tee -a /etc/hosts
 EOF
 ```
 
+> [!WARNING]
 > If this step is missed, the [DNS Cluster Add-on](12-dns-addon.md) testing will
 fail with an error like this: `Error from server: error dialing backend: dial tcp: lookup ip-10-0-1-22 on 127.0.0.53:53: server misbehaving`
 

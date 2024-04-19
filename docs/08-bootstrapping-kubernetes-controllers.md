@@ -200,6 +200,7 @@ sudo systemctl enable kube-apiserver kube-controller-manager kube-scheduler
 sudo systemctl start kube-apiserver kube-controller-manager kube-scheduler
 ```
 
+> [!TIP]
 > Allow up to 10 seconds for the Kubernetes API Server to fully initialize.
 
 ### Verification

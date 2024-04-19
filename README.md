@@ -49,5 +49,5 @@ This tutorial assumes you have access to the [Amazon Web Service](https://aws.am
 * [Provisioning Pod Network Routes](docs/11-pod-network-routes.md)
 * [Deploying the DNS Cluster Add-on](docs/12-dns-addon.md)
 * [Smoke Test](docs/13-smoke-test.md)
-* [Nginx Ingress](docs/bonus-nginx-ingress.md) 🎁 Bonus content! 🎁
-* [Cleaning Up](docs/14-cleanup.md)
+* [Nginx Ingress](docs/14-bonus-nginx-ingress.md) 🎁 Bonus content! 🎁
+* [Cleaning Up](docs/15-cleanup.md)

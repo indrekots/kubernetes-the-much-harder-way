@@ -213,6 +213,7 @@ kubectl cluster-info --kubeconfig admin.kubeconfig
 Kubernetes control plane is running at https://127.0.0.1:6443
 ```
 
+> [!NOTE]
 > Remember to run the above command on each controller node: `controller-0`, `controller-1`, and `controller-2`.
 
 ### Add Host File Entries

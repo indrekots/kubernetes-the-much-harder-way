@@ -216,6 +216,12 @@ Kubernetes control plane is running at https://127.0.0.1:6443
 > [!NOTE]
 > Remember to run the above command on each controller node: `controller-0`, `controller-1`, and `controller-2`.
 
+In case of any errors, view the status of the services
+
+```bash
+sudo systemctl status kube-apiserver kube-controller-manager kube-scheduler
+```
+
 ### Add Host File Entries
 
 In order for `kubectl exec` commands to work, the controller nodes must each

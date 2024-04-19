@@ -309,7 +309,7 @@ List the registered Kubernetes nodes:
 
 ```bash
 external_ip=$(aws ec2 describe-instances --filters \
-    "Name=tag:Name,Values=controller-0" \
+    "Name=tag:Name,Values=${CONTROLLER_NAME}-0" \
     "Name=instance-state-name,Values=running" \
     --output text --query 'Reservations[].Instances[].PublicIpAddress')
 

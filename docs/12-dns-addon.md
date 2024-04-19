@@ -6,7 +6,7 @@ In this lab you will deploy the [DNS add-on](https://kubernetes.io/docs/concepts
 
 Deploy the `coredns` cluster add-on:
 
-```
+```bash
 kubectl apply -f https://storage.googleapis.com/kubernetes-the-hard-way/coredns-1.8.yaml
 ```
 
@@ -23,7 +23,7 @@ service/kube-dns created
 
 List the pods created by the `core-dns` deployment:
 
-```
+```bash
 kubectl get pods -l k8s-app=kube-dns -n kube-system
 ```
 
@@ -39,13 +39,13 @@ coredns-8494f9c688-zqrj2   1/1     Running   0          10s
 
 Create a `busybox` deployment:
 
-```
+```bash
 kubectl run busybox --image=busybox:1.28 --command -- sleep 3600
 ```
 
 List the pod created by the `busybox` deployment:
 
-```
+```bash
 kubectl get pods -l run=busybox
 ```
 
@@ -58,13 +58,13 @@ busybox   1/1     Running   0          3s
 
 Retrieve the full name of the `busybox` pod:
 
-```
+```bash
 POD_NAME=$(kubectl get pods -l run=busybox -o jsonpath="{.items[0].metadata.name}")
 ```
 
 Execute a DNS lookup for the `kubernetes` service inside the `busybox` pod:
 
-```
+```bash
 kubectl exec -ti $POD_NAME -- nslookup kubernetes
 ```
 

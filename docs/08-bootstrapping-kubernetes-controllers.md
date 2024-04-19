@@ -309,6 +309,7 @@ EOF
 
 ### Verification of cluster public endpoint
 
+> [!NOTE]
 > The compute instances created in this tutorial will not have permission to complete this section. **Run the following commands from the same machine used to create the compute instances**.
 
 Retrieve the `kubernetes-the-hard-way` Load Balancer address:

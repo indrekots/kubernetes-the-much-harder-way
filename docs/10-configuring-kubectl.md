@@ -2,6 +2,7 @@
 
 In this lab you will generate a kubeconfig file for the `kubectl` command line utility based on the `admin` user credentials.
 
+> [!IMPORTANT]
 > Run the commands in this lab from the same directory used to generate the admin client certificates.
 
 ## The Admin Kubernetes Configuration File
@@ -10,7 +11,7 @@ Each kubeconfig requires a Kubernetes API Server to connect to. To support high 
 
 Generate a kubeconfig file suitable for authenticating as the `admin` user:
 
-```
+```bash
 KUBERNETES_PUBLIC_ADDRESS=$(aws elbv2 describe-load-balancers \
 --load-balancer-arns ${LOAD_BALANCER_ARN} \
 --output text --query 'LoadBalancers[].DNSName')
@@ -35,7 +36,7 @@ kubectl config use-context kubernetes-the-hard-way
 
 Check the version of the remote Kubernetes cluster:
 
-```
+```bash
 kubectl version
 ```
 
@@ -48,7 +49,7 @@ Server Version: version.Info{Major:"1", Minor:"21", GitVersion:"v1.21.0", GitCom
 
 List the nodes in the remote Kubernetes cluster:
 
-```
+```bash
 kubectl get nodes
 ```
 

@@ -16,7 +16,7 @@ In production workloads this functionality will be provided by CNI plugins like 
 Print the internal IP address and Pod CIDR range for each worker instance and create route table entries:
 
 ```sh
-for instance in worker-0 worker-1 worker-2; do
+for instance in ${WORKER_NAME}-0 ${WORKER_NAME}-1 ${WORKER_NAME}-2; do
   instance_id_ip="$(aws ec2 describe-instances \
     --filters "Name=tag:Name,Values=${instance}" \
     --output text --query 'Reservations[].Instances[].[InstanceId,PrivateIpAddress]')"

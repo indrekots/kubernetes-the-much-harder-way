@@ -11,7 +11,7 @@ echo "Issuing shutdown to worker nodes.. " && \
 aws ec2 terminate-instances \
   --instance-ids \
     $(aws ec2 describe-instances --filters \
-      "Name=tag:Name,Values=worker-0,worker-1,worker-2" \
+      "Name=tag:Name,Values=${WORKER_NAME}-0,${WORKER_NAME}-1,${WORKER_NAME}-2" \
       "Name=instance-state-name,Values=running" \
       --output text --query 'Reservations[].Instances[].InstanceId')
 
@@ -19,14 +19,14 @@ echo "Waiting for worker nodes to finish terminating.. " && \
 aws ec2 wait instance-terminated \
   --instance-ids \
     $(aws ec2 describe-instances \
-      --filter "Name=tag:Name,Values=worker-0,worker-1,worker-2" \
+      --filter "Name=tag:Name,Values=${WORKER_NAME}-0,${WORKER_NAME}-1,${WORKER_NAME}-2" \
       --output text --query 'Reservations[].Instances[].InstanceId')
 
 echo "Issuing shutdown to master nodes.. " && \
 aws ec2 terminate-instances \
   --instance-ids \
     $(aws ec2 describe-instances --filter \
-      "Name=tag:Name,Values=controller-0,controller-1,controller-2" \
+      "Name=tag:Name,Values=${CONTROLLER_NAME}-0,${CONTROLLER_NAME}-1,${CONTROLLER_NAME}-2" \
       "Name=instance-state-name,Values=running" \
       --output text --query 'Reservations[].Instances[].InstanceId')
 
@@ -34,10 +34,10 @@ echo "Waiting for master nodes to finish terminating.. " && \
 aws ec2 wait instance-terminated \
   --instance-ids \
     $(aws ec2 describe-instances \
-      --filter "Name=tag:Name,Values=controller-0,controller-1,controller-2" \
+      --filter "Name=tag:Name,Values=${CONTROLLER_NAME}-0,${CONTROLLER_NAME}-1,${CONTROLLER_NAME}-2" \
       --output text --query 'Reservations[].Instances[].InstanceId')
 
-aws ec2 delete-key-pair --key-name kubernetes
+aws ec2 delete-key-pair --key-name <my key name>
 ```
 
 ## Networking
